@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<definitions name="EjemploServicio" 
+    targetNamespace="urn:Ejemplo"
+     xmlns:tns="urn:Ejemplo"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <types>
+    <schema targetNamespace="http://example.com/stockquote.xsd"
+            xmlns="http://www.w3.org/2000/10/XMLSchema">
+      <element name="arrayofstring">
+		<complexType name='ArrayOfString'>
+			<sequence>
+				<element name='item' type='xsd:string' maxOccurs='unbounded'/>
+			</sequence>
+		</complexType>
+      </element>
+    </schema>
+  </types>   
+   
+ 
+   <message name = "tituloLibroRequest">
+      <part name = "isbn" type = "xsd:string"/>
+   </message>
+	
+   <message name = "tituloLibroResponse">
+      <part name = "titulo" type = "xsd:string"/>
+   </message>
+   
+   <message name = "librosAutorRequest">
+      <part name = "autor" type = "xsd:string"/>
+   </message>
+	
+   <message name = "librosAutorResponse">
+      <part name = "titulo" type = "xsd:arrayofstring"/>
+   </message>   
+   
+
+   <portType name = "tituloLibro_PortType">
+      <operation name = "tituloLibro">
+         <input message = "tns:tituloLibroRequest"/>
+         <output message = "tns:tituloLibroResponse"/>
+      </operation>
+	  <operation name = "librosAutor">
+         <input message = "tns:librosAutorRequest"/>
+         <output message = "tns:librosAutorResponse"/>
+      </operation>
+   </portType>
+   
+   <binding name = "dwes06_Binding" type = "tns:tituloLibro_PortType">
+      <soap:binding style = "document"
+         transport = "http://schemas.xmlsoap.org/soap/http"/>
+      <operation name = "tituloLibro">
+         <soap:operation soapAction = "http:/localhost/tituloLibro"/>
+			<input>
+			  <soap:body use="encoded" 
+						 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</input>
+			<output>
+			  <soap:body use="encoded" 
+						 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</output>
+      </operation>
+	  
+      <operation name = "librosAutor">
+         <soap:operation soapAction = "http:/localhost/librosAutor"/>
+			<input>
+			  <soap:body use="encoded" 
+						 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</input>
+			<output>
+			  <soap:body use="encoded" 
+						 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</output>
+
+      </operation>	  
+   </binding>
+
+   <service name = "dwes06_Service">
+      <documentation>Practica DWES06</documentation>
+      <port binding = "tns:dwes06_Binding" name = "dwes06_Port">
+         <soap:address
+            location = "http://localhost/dwes06/webservice.php" />
+      </port>
+   </service>
+</definitions>
